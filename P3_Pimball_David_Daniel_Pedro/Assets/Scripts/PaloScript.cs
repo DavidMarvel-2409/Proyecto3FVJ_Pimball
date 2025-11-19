@@ -7,9 +7,13 @@ public class PaloScript : MonoBehaviour
     public float fuerza;
     public KeyCode control;
     public GameObject PP;
+    public List<Material> Materiales;
+    private Renderer rr;
+    public GameObject palo;
 
     void Start()
     {
+        rr = palo.GetComponent<Renderer>();
     }
 
     // Update is called once per frame
@@ -26,11 +30,13 @@ public class PaloScript : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         PP = collision.gameObject;
-        Debug.Log("lala");
+        rr.material = Materiales[1];
+        //Debug.Log("lala");
     }
     private void OnCollisionExit(Collision collision)
     {
         PP = null;
+        rr.material = Materiales[0];
     }
 
 }
