@@ -21,7 +21,7 @@ public class PelotaScript : MonoBehaviour
 
     public void empuje(Vector3 direc, float speed)
     {
-        rd.velocity = direc * speed;
+        rd.velocity += direc * speed;
         
     }
     private void OnCollisionEnter(Collision collision)

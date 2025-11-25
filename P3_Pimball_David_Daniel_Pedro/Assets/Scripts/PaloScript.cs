@@ -9,11 +9,11 @@ public class PaloScript : MonoBehaviour
     public GameObject PP;
     public List<Material> Materiales;
     private Renderer rr;
-    public GameObject palo;
+    //public GameObject palo;
 
     void Start()
     {
-        rr = palo.GetComponent<Renderer>();
+        rr = GetComponent<Renderer>();
     }
 
     // Update is called once per frame
@@ -35,8 +35,11 @@ public class PaloScript : MonoBehaviour
     }
     private void OnCollisionExit(Collision collision)
     {
-        PP = null;
-        rr.material = Materiales[0];
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            PP = null;
+            rr.material = Materiales[0];
+        }
     }
 
 }
