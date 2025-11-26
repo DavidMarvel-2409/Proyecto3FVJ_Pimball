@@ -9,9 +9,13 @@ public class BumperCircular : MonoBehaviour
     private Renderer rr;
     [SerializeField] private float fuerza;
 
+    [SerializeField] private List<AudioClip> sonidos;
+    private AudioSource ss;
+
     void Start()
     {
         rr = GetComponent<Renderer>();
+        ss = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -31,5 +35,7 @@ public class BumperCircular : MonoBehaviour
     private void OnCollisionExit(Collision collision)
     {
         rr.material = Materiales[0];
+        ss.pitch = Random.Range(0.9f, 1.2f);
+        ss.PlayOneShot(sonidos[0]);
     }
 }

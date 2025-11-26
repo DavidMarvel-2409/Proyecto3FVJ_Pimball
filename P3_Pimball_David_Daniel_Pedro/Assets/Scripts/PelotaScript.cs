@@ -7,10 +7,13 @@ public class PelotaScript : MonoBehaviour
     private Rigidbody rd;
     public int lifes;
     private Vector3 spawn;
+    private AudioSource ss;
+    [SerializeField] private List<AudioClip> sonidos;
     void Start()
     {
         rd = GetComponent<Rigidbody>();
         spawn = transform.position;
+        ss = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -30,6 +33,8 @@ public class PelotaScript : MonoBehaviour
         {
             lifes--;
             transform.position = spawn;
+            ss.pitch = Random.Range(0.1f, 0.2f);
+            ss.PlayOneShot(sonidos[0]);
         }
     }
 }

@@ -9,11 +9,14 @@ public class PaloScript : MonoBehaviour
     public GameObject PP;
     public List<Material> Materiales;
     private Renderer rr;
+    private AudioSource ss;
+    [SerializeField] private List<AudioClip> sonidos;
     //public GameObject palo;
 
     void Start()
     {
         rr = GetComponent<Renderer>();
+        ss = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -39,6 +42,11 @@ public class PaloScript : MonoBehaviour
         {
             PP = null;
             rr.material = Materiales[0];
+            if (Input.GetKey(control))
+            {
+                ss.pitch = Random.Range(0.3f, 0.5f);
+                ss.PlayOneShot(sonidos[0]);
+            }
         }
     }
 
