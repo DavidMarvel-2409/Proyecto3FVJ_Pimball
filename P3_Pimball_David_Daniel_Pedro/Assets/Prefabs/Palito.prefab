@@ -127,6 +127,8 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 7e9bca92ba8f82d42a8483177c0d1721, type: 2}
   sonidos:
   - {fileID: 8300000, guid: dd9869dd38037e34d8c85a13542aec9b, type: 3}
+  - {fileID: 8300000, guid: c1e20cad1e992d542827fddb5a04ee44, type: 3}
+  pedoMode: 0
 --- !u!82 &6594004437374737711
 AudioSource:
   m_ObjectHideFlags: 0

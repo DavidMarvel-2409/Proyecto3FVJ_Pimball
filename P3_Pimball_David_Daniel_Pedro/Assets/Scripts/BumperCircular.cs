@@ -11,6 +11,7 @@ public class BumperCircular : MonoBehaviour
 
     [SerializeField] private List<AudioClip> sonidos;
     private AudioSource ss;
+    public bool pedoMode = false;
 
     void Start()
     {
@@ -30,12 +31,14 @@ public class BumperCircular : MonoBehaviour
             rr.material = Materiales[1];
             Vector3 direc = collision.transform.position - transform.position;
             collision.gameObject.GetComponent<PelotaScript>().empuje(direc,fuerza);
+            collision.gameObject.GetComponent<PelotaScript>().Points++;
         }
     }
     private void OnCollisionExit(Collision collision)
     {
         rr.material = Materiales[0];
         ss.pitch = Random.Range(0.9f, 1.2f);
-        ss.PlayOneShot(sonidos[0]);
+        if (pedoMode) ss.PlayOneShot(sonidos[0]);
+        else ss.PlayOneShot(sonidos[1]);
     }
 }

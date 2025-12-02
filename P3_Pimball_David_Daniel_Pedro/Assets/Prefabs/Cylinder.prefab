@@ -127,6 +127,8 @@ MonoBehaviour:
   fuerza: 4
   sonidos:
   - {fileID: 8300000, guid: dd9869dd38037e34d8c85a13542aec9b, type: 3}
+  - {fileID: 8300000, guid: ef79e66d5396fcb4d9964a94d662a4ef, type: 3}
+  pedoMode: 0
 --- !u!82 &-1275315206955332807
 AudioSource:
   m_ObjectHideFlags: 0

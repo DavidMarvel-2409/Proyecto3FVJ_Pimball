@@ -9,6 +9,8 @@ public class PelotaScript : MonoBehaviour
     private Vector3 spawn;
     private AudioSource ss;
     [SerializeField] private List<AudioClip> sonidos;
+    public bool pedoMode = false;
+    public int Points = 0;
     void Start()
     {
         rd = GetComponent<Rigidbody>();
@@ -33,8 +35,12 @@ public class PelotaScript : MonoBehaviour
         {
             lifes--;
             transform.position = spawn;
-            ss.pitch = Random.Range(0.1f, 0.2f);
-            ss.PlayOneShot(sonidos[0]);
+            if (pedoMode)
+            {
+                ss.pitch = Random.Range(0.1f, 0.2f);
+                ss.PlayOneShot(sonidos[0]);
+            }
+
         }
     }
 }

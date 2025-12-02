@@ -11,6 +11,7 @@ public class PaloScript : MonoBehaviour
     private Renderer rr;
     private AudioSource ss;
     [SerializeField] private List<AudioClip> sonidos;
+    public bool pedoMode = false;
     //public GameObject palo;
 
     void Start()
@@ -45,7 +46,8 @@ public class PaloScript : MonoBehaviour
             if (Input.GetKey(control))
             {
                 ss.pitch = Random.Range(0.3f, 0.5f);
-                ss.PlayOneShot(sonidos[0]);
+                if (pedoMode) ss.PlayOneShot(sonidos[0]);
+                else ss.PlayOneShot(sonidos[1]);
             }
         }
     }
