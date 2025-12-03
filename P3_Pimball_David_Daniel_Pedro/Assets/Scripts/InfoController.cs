@@ -24,6 +24,7 @@ public class InfoController : MonoBehaviour
     {
         Time.timeScale = 0;
         mostrar();
+        //Debug.Log($"Rura: {ruta}");
     }
 
     void Update()
@@ -74,57 +75,59 @@ public class InfoController : MonoBehaviour
     }
     private void mostrar()
     {
-        PuntajeData datosCargados = CargarPuntajes(); 
+        PuntajeData datosCargados = CargarPuntajes();
+
         foreach (Transform child in Content_.transform)
-        {
             Destroy(child.gameObject);
-        }
-        int maxPuntajesAMostrar = 10;
+
         for (int i = 0; i < datosCargados.listaPuntajes.Count; i++)
         {
-            if (i >= maxPuntajesAMostrar)
-            {
-                break;
-            }
             PuntajeEntry entry = datosCargados.listaPuntajes[i];
+
             GameObject nuevoItem = Instantiate(puntajeItemPrefab, Content_.transform);
+
             TextMeshProUGUI textoTMP = nuevoItem.GetComponent<TextMeshProUGUI>();
+
             if (textoTMP != null)
             {
-                // Formato: Posición. Nombre - Puntaje
-                textoTMP.text = $"{(i + 1)}. {entry.nombreJugador} - {entry.puntaje}\n";
+                textoTMP.text = $"{i + 1}) {entry.nombreJugador} - {entry.puntaje}";
             }
             else
             {
-                Debug.LogError("¡El Prefab de puntaje no tiene un componente TextMeshProUGUI!");
+                Debug.LogError("El prefab no tiene TextMeshProUGUI!");
             }
-            nuevoItem.SetActive(true);
-
         }
     }
     public void GuardarNuevoPuntaje(string nombre, int score)
     {
         PuntajeData data = CargarPuntajes();
+
         PuntajeEntry nuevoEntry = new PuntajeEntry
         {
             nombreJugador = nombre,
             puntaje = score
         };
+
         data.listaPuntajes.Add(nuevoEntry);
+
         data.listaPuntajes.Sort((a, b) => b.puntaje.CompareTo(a.puntaje));
 
-        string json = JsonUtility.ToJson(data);
+        if (data.listaPuntajes.Count > 3)
+            data.listaPuntajes = data.listaPuntajes.GetRange(0, 3);
+
+        string json = JsonUtility.ToJson(data, true);
 
         try
         {
             File.WriteAllText(ruta, json);
-            Debug.Log("Nuevo puntaje guardado. Total de registros: " + data.listaPuntajes.Count);
+            Debug.Log("Puntajes guardados. Total: " + data.listaPuntajes.Count);
         }
         catch (System.Exception e)
         {
-            Debug.LogError("Error al guardar el archivo JSON: " + e.Message);
+            Debug.LogError("Error al guardar JSON: " + e.Message);
         }
     }
+
     public PuntajeData CargarPuntajes()
     {
         if (!File.Exists(ruta))
