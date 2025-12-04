@@ -5,6 +5,7 @@ using UnityEngine;
 public class PaloScript : MonoBehaviour
 {
     public float fuerza;
+    public float fuerzaCargada = 0;
     public KeyCode control;
     public GameObject PP;
     public List<Material> Materiales;
@@ -23,18 +24,31 @@ public class PaloScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(control))
+        if (Input.GetKey(control))
         {
+            if (fuerzaCargada < fuerza) fuerzaCargada += 50 * Time.deltaTime;
+            else fuerzaCargada = fuerza;
+        }
+        else if (Input.GetKeyUp(control)) {
             if (PP != null)
             {
-                PP.GetComponent<PelotaScript>().empuje(transform.forward, fuerza);
+                Debug.Log("Lanzamiento");
+                ss.pitch = Random.Range(0.3f, 0.5f);
+                if (pedoMode) ss.PlayOneShot(sonidos[0]);
+                else ss.PlayOneShot(sonidos[1]);
+                if (fuerzaCargada >= fuerza) fuerzaCargada = fuerza;
+                PP.GetComponent<PelotaScript>().empuje(transform.forward, fuerzaCargada);
             }
+            fuerzaCargada = 0;
         }
     }
     private void OnCollisionEnter(Collision collision)
     {
-        PP = collision.gameObject;
-        rr.material = Materiales[1];
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            PP = collision.gameObject;
+            rr.material = Materiales[1];
+        }
         //Debug.Log("lala");
     }
     private void OnCollisionExit(Collision collision)
@@ -51,5 +65,7 @@ public class PaloScript : MonoBehaviour
             }
         }
     }
+
+    public float getFuerzaCargada() => fuerzaCargada;
 
 }

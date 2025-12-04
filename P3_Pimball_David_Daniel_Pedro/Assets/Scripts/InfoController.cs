@@ -8,13 +8,16 @@ using UnityEngine.UIElements;
 public class InfoController : MonoBehaviour
 {
     public GameObject pelota;
-    public TextMeshProUGUI contadordevidas, bells;
+    public TextMeshProUGUI contadordevidas, bells, fuerza;
     public TextMeshProUGUI MensajeEnPantalla, puntajeBox, nameBox;
-    public GameObject HUD, _Start, puntajes, Content_, puntajeItemPrefab;
+    public GameObject HUD, _Start, puntajes, Content_, puntajeItemPrefab, pad;
     private string tipodepuntos = "";
     private bool GameOver = false;
-
+    private bool fadeInMusic = false;
+    private float t = 0;
     private string FileName = "Puntajes.json", ruta; 
+    [SerializeField] private AudioSource menu, ingame;
+
     private void Awake()
     {
         ruta = Path.Combine(Application.persistentDataPath, FileName);
@@ -39,13 +42,40 @@ public class InfoController : MonoBehaviour
         else MensajeEnPantalla.text = " ";
         if (pelota.GetComponent<PelotaScript>().pedoMode) tipodepuntos = "Pedos";
         else tipodepuntos = "Campanas";
-        bells.text = $"{tipodepuntos} x {pelota.GetComponent<PelotaScript>().Points}";
+        bells.text = $"{tipodepuntos} x {pelota.GetComponent<PelotaScript>().getPoints()}";
+
+        float f = pad.GetComponent<PaloScript>().getFuerzaCargada();
+        switch (f)
+        {
+            case 00f: fuerza.text = "Fuerza: ------------"; break;
+            case 05f: fuerza.text = "Fuerza: []----------"; break;
+            case 10f: fuerza.text = "Fuerza: [--]--------"; break;
+            case 15f: fuerza.text = "Fuerza: [----]------"; break;
+            case 20f: fuerza.text = "Fuerza: [------]----"; break;
+            case 25f: fuerza.text = "Fuerza: [--------]--"; break;
+            case 30f: fuerza.text = "Fuerza: [----------]"; break;
+        }
+
+        if (fadeInMusic)
+        {
+            t += 0.5f * Time.deltaTime;
+            float ingaVol = Mathf.Lerp(0f, 1f, t);
+            float menuVol = Mathf.Lerp(1f, 0f, t);
+            Debug.Log($"Fade In: {t}");
+            menu.volume = menuVol;
+            ingame.volume = ingaVol;
+            if (ingaVol == 1 && menuVol == 0) 
+            {
+                t = 0;
+                fadeInMusic = false;
+            }
+        }
 
         puntajes.SetActive(GameOver);
 
         if (!GameOver)
         {
-            puntajeBox.text = $"Nuevo Puntaje: {pelota.GetComponent<PelotaScript>().Points}";
+            puntajeBox.text = $"Nuevo Puntaje: {pelota.GetComponent<PelotaScript>().getPoints()}";
         }
     }
 
@@ -54,13 +84,13 @@ public class InfoController : MonoBehaviour
         string namee = nameBox.text; 
         if (!string.IsNullOrWhiteSpace(namee))
         {
-            GuardarNuevoPuntaje(namee, pelota.GetComponent<PelotaScript>().Points);
+            GuardarNuevoPuntaje(namee, pelota.GetComponent<PelotaScript>().getPoints());
 
             mostrar();
         }
         else
         {
-            Debug.LogWarning("El nombre del jugador no puede estar vacío.");
+            Debug.LogWarning("El nombre del jugador no puede estar vacÃ­o.");
         }
     }
     public void EndGame()
@@ -72,6 +102,7 @@ public class InfoController : MonoBehaviour
         _Start.SetActive(false);
         HUD.SetActive(true);
         Time.timeScale = 1;
+        fadeInMusic = true;
     }
     private void mostrar()
     {
