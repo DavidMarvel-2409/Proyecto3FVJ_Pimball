@@ -75,7 +75,14 @@ public class EventControll : MonoBehaviour
                         }
                         catch
                         {
-                            Debug.Log("Objeto fuera de lista");
+                            try
+                            {
+                                Objetos_en_escenario[i].GetComponent<Bumperpad>().pedoMode = pedoMode;
+                            }
+                            catch
+                            {
+                                Debug.Log("Objeto fuera de lista");
+                            }
                         }
                     }
                 }
