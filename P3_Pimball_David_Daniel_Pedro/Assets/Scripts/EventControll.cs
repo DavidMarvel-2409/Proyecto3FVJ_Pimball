@@ -10,10 +10,10 @@ public class EventControll : MonoBehaviour
         KeyCode.UpArrow,
         KeyCode.DownArrow,
         KeyCode.DownArrow,
-        KeyCode.RightArrow,
         KeyCode.LeftArrow,
         KeyCode.RightArrow,
         KeyCode.LeftArrow,
+        KeyCode.RightArrow,
         KeyCode.B,
         KeyCode.A,
         KeyCode.Return   // Enter
